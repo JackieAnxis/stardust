@@ -1,4 +1,5 @@
 /** A dictionary class that maps string to ValueType */
+// 提供类似ES6 set的功能
 export class Dictionary<ValueType> {
   private _dict: { [name: string]: ValueType };
   constructor() {
@@ -54,6 +55,7 @@ export function shallowClone<T>(object: T): T {
 }
 
 /** Attempt different names starting with prefix until check returns true */
+// 用输入的check函数检测输入的prefix是否合理？如果不合理则改成prefix1, prefix2...直到check成功
 export function attemptName(
   prefix: string,
   check: (candidate: string) => boolean

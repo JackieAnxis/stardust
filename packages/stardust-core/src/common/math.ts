@@ -103,6 +103,7 @@ export class Vector3 extends MathType {
   }
 
   public cross(rhs: Vector3): Vector3 {
+    // 叉积 https://zh.wikipedia.org/wiki/%E5%8F%89%E7%A7%AF
     return new Vector3(
       this.y * rhs.z - this.z * rhs.y,
       this.z * rhs.x - this.x * rhs.z,
@@ -129,6 +130,7 @@ export class Vector3 extends MathType {
 /** Quaternion */
 export class Quaternion extends MathType {
   /** Spherical linear interpolation */
+  // 球面线性插值，https://blog.csdn.net/u012947821/article/details/17136443
   public static Slerp(q1: Quaternion, q2: Quaternion, t: number) {
     let acos_arg = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
     if (acos_arg > 1) {
@@ -156,6 +158,7 @@ export class Quaternion extends MathType {
   }
 
   /** Create a rotation quaternion from axis and rotation angle */
+  // 对一个三维向量施加旋转，转化为一个四元数
   public static Rotation(axis: Vector3, angle: number): Quaternion {
     const axis_normal = axis.normalize().scale(Math.sin(angle / 2));
     return new Quaternion(
@@ -237,10 +240,12 @@ export class Pose {
     public rotation: Quaternion = new Quaternion(0, 0, 0, 1)
   ) {}
 
+  // 先旋转rotation，再位移position
   public transform(point: Vector3) {
     return this.rotation.rotate(point).add(this.position);
   }
 
+  // 仅仅进行旋转
   public transformDirection(direction: Vector3) {
     return this.rotation.rotate(direction);
   }
@@ -252,6 +257,7 @@ export class Pose {
     );
   }
 
+  // rotation进行共轭，position乘以-1
   public invert() {
     const invRotation = this.rotation.conj();
     return new Pose(invRotation.rotate(this.position).scale(-1), invRotation);
