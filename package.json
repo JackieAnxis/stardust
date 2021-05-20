@@ -31,5 +31,14 @@
     "prettify:examples": "prettier 'packages/stardust-examples/**/*.{html,js,css}' --print-width 120 --write",
     "lint:fix": "tslint 'packages/**/src/**/*.ts' --fix",
     "lint": "tslint 'packages/**/src/**/*.ts'"
-  }
+  },
+  "madge": {
+		"fontSize": "10px",
+		"graphVizOptions": {
+			"G": {
+				"rankdir": "LR"
+			}
+		},
+    "tsConfig": "./tsconfig.json"
+	}
 }
