@@ -46,6 +46,25 @@ export class Mark {
   private _platformMarkData: PlatformMarkData;
   private _shouldUploadData: boolean;
 
+  /**
+   * 
+   * @param spec Mark {
+      input: { [name: string]: Input }; // Input attributes
+      output: { [name: string]: Output }; // Output vertex attributes
+      variables: { [name: string]: ValueType }; // Variable list
+      statements: Statement[]; // Mark statements
+      repeatBegin?: number;
+      repeatEnd?: number;
+      shader?: Shader; // The default shader for this mark
+    }
+   * @param shader Shader {
+      input: { [name: string]: Input }; // Input attributes
+      output: { [name: string]: Output }; // Output attributes
+      variables: { [name: string]: ValueType }; // Variable list
+      statements: Statement[]; // Shader statements
+    }
+   * @param platform Register()/Create()/compile()
+   */
   constructor(
     spec: Specification.Mark,
     shader: Specification.Shader,
@@ -55,8 +74,8 @@ export class Mark {
     this._shader = shader;
     this._data = [];
     this._platform = platform;
-    this._bindings = new Dictionary<MarkBinding>();
-    this._shiftBindings = new Dictionary<ShiftBinding>();
+    this._bindings = new Dictionary<MarkBinding>(); // type MarkBinding = Binding | ScaleBinding;
+    this._shiftBindings = new Dictionary<ShiftBinding>(); // ?
     this._platformMark = null;
     this._shouldUploadData = true;
     this._instanceFunctions = null;
@@ -67,6 +86,7 @@ export class Mark {
         const input = this._spec.input[name];
         if (input.default != null) {
           this._bindings.set(name, new Binding(input.type, input.default));
+          // Binding: 用于封装value，可以装入 值/函数/Texture；其fillBinary函数可以将值填充到Float32Array/Int32Array数组中
         }
       }
     }
